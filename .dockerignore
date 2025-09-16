@@ -1,8 +1,0 @@
-.git
-*.log
-vendor
-node_modules
-*.png
-*.jpg
-.DS_Store
-.env
