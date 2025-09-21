@@ -1,0 +1,48 @@
+services:
+  go-api:
+    container_name: patienceBank_api
+    build: 
+      context: ./api
+    ports:
+      - "8080:8080"
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./api:/go/src/app
+    networks:
+      - patienceBank_network
+  db:
+    image: mysql:8.0
+    container_name: patienceBank_db
+    build: ./mysql
+    tty: true
+    platform: linux/amd64
+    env_file: .env
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: p${DB_NAME}
+    ports:
+      - "8000:3306"
+    volumes:
+      - patience_test_volumes:/var/lib/mysql
+      - ./mysql/conf.d/etc/mysql/conf.d
+      - type: bind
+        source: ./mysql/my.cnf
+        target: /etc/mysql/my.cnf
+    networks:
+      - patienceBank_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  patience_test_volumes:
+    name: patience_test_volumes
+networks:
+  patienceBank_network:

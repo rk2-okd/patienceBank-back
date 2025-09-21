@@ -3,14 +3,14 @@ package main
 import (
 	"net/http"
 
-	"github.com/patience-back/api/connect"
+	"github.com/rk2-okd/patienceBank-back/connect"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	connect.DBconnect()
+	connect.DBConnect()
 	// Ginのデフォルトのルーターを作成
 	r := gin.Default()
 
@@ -20,9 +20,7 @@ func main() {
 			"message": "Hello, World!",
 		})
 	})
-	r.GET("/goalsettings", func(c *gin.Context) {
-
-	})
+	// r.GET("/goalsettings", goalsettings.GoalSettingsHandler(connect.DB))
 
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動

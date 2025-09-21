@@ -14,7 +14,8 @@ import (
 var DB *gorm.DB
 
 func DBConnect() {
-	err := godotenv.Load()
+
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
@@ -52,6 +53,3 @@ func DBConnect() {
 
 	log.Println("データベース接続成功")
 }
-
-// go mod init day11
-// go get gorm.io/driver/mysql
