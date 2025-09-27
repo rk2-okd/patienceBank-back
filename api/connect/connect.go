@@ -13,9 +13,9 @@ import (
 
 var DB *gorm.DB
 
-func DBConnect() {
+func DBConnect() *gorm.DB {
 
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
@@ -27,6 +27,7 @@ func DBConnect() {
 		os.Getenv("DB_NAME"),
 	)
 	log.Println(dsn)
+	// log.Printf("Connecting to DB: %s@tcp(%s:%s)/%s", user, host, port, dbname)
 
 	var dbErr error
 	for i := 0; i < 10; i++ {
@@ -52,4 +53,5 @@ func DBConnect() {
 	sqlDB.SetConnMaxLifetime(30 * time.Hour)
 
 	log.Println("データベース接続成功")
+	return DB
 }

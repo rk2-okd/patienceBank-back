@@ -1,3 +1,9 @@
+API
+・目標設定API
+・過去の記録取得API
+・先週の結果取得API
+・SNS共有API
+
 
 設計
 
@@ -12,5 +18,7 @@ gaman_id:int
 gaman_thing: string
 gaman_money:int
 gaman_day:date
+
+
 
 

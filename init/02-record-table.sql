@@ -1,6 +1,6 @@
 
 USE patienceBank_db;
-CREATE TABLE IF NOT EXISTS record-table (
+CREATE TABLE IF NOT EXISTS records (
     gaman_id INT AUTO_INCREMENT PRIMARY KEY,
     gaman_thing VARCHAR(255) NOT NULL,
     gaman_money INT NOT NULL,

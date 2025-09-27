@@ -21,19 +21,18 @@ services:
     platform: linux/amd64
     env_file: .env
     environment:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: p${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
     ports:
       - "8000:3306"
     volumes:
       - patience_test_volumes:/var/lib/mysql
-      - ./mysql/conf.d/etc/mysql/conf.d
       - type: bind
-        source: ./mysql/my.cnf
-        target: /etc/mysql/my.cnf
+        source: ./init
+        target: /docker-entrypoint-initdb.d
     networks:
       - patienceBank_network
     healthcheck:

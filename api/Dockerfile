@@ -1,10 +1,16 @@
-
-FROM golang:1.21
+FROM golang:1.23.4
 WORKDIR /api
-COPY go.mod .
-COPY go.sum .
+
+COPY ./go.mod .
+COPY ./go.sum .
+
+# 依存取得と整理
 RUN go mod download
-RUN go mod tidy
+# ソースコードをコピー
 COPY . .
+
+# ビルド
 RUN go build -o main .
-CMD [ "./main" ]
+
+# 実行
+CMD ["./main"]
