@@ -12,7 +12,7 @@ services:
     volumes:
       - ./api:/go/src/app
     networks:
-      - patienceBank_network
+      - patienceBank-networks
   db:
     image: mysql:8.0
     container_name: patienceBank_db
@@ -35,7 +35,7 @@ services:
         source: ./init
         target: /docker-entrypoint-initdb.d
     networks:
-      - patienceBank_network
+      - patienceBank-networks
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -45,4 +45,5 @@ volumes:
   patience_test_volumes:
     name: patience_test_volumes
 networks:
-  patienceBank_network:
+  patienceBank-networks:
+    external: true
