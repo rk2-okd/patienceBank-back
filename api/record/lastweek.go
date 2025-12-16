@@ -1,4 +1,4 @@
-package lastweek
+package record
 
 import (
 	"log"

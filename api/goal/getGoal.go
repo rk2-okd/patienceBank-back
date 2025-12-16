@@ -1,4 +1,4 @@
-package getgoal
+package goal
 
 import (
 	"errors"

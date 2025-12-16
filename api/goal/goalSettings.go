@@ -1,9 +1,8 @@
-package input
+package goal
 
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -11,29 +10,36 @@ import (
 	"gorm.io/gorm"
 )
 
-func InputHandler(db *gorm.DB) gin.HandlerFunc {
+func GoalSettingsHandler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
-		log.Println("InputHandlerにアクセスされました")
-		var record model.Record
+		log.Println("GoalSettingsHandlerにアクセスされました")
+
+		var goal model.Goal
 		validate := validator.New()
-		if err := c.ShouldBindJSON(&record); err != nil {
+
+		// JSONを単体としてバインド
+		if err := c.ShouldBindJSON(&goal); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"バインドエラー": err.Error()})
 			return
 		}
-		log.Printf("bind result: %+v\n", record)
-		record.GamanDay = time.Now().In(time.FixedZone("JST", 9*60*60)).Format("2006-01-02")
-		if err := validate.Struct(record); err != nil {
+
+		// バリデーション
+		if err := validate.Struct(goal); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"バリデーションエラー": err.Error()})
 			return
 		}
-		if err := db.Create(&record).Error; err != nil {
+
+		// DB保存
+		if err := db.Create(&goal).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"ＤＢ保存エラー": err.Error()})
 			return
 		}
+
+		// 成功レスポンス
 		c.JSON(http.StatusOK, gin.H{
-			"message":   "記録を保存しました",
-			"record_id": record.GamanID,
+			"message": "目標設定を保存しました",
+			"goal_id": goal.GoalID,
 		})
 	}
 }
