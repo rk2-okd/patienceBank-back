@@ -3,8 +3,8 @@ package model
 import "time"
 
 type Goal struct {
-	GoalID    int       `gorm:"primaryKey;autoIncrement" json:"goal_id"`
-	GoalMoney int       `json:"goal_money" validate:"required"`
-	GoalCount int       `json:"goal_count" validate:"required"`
+	GoalID    int       `json:"goal_id" gorm:"column:goal_id;primaryKey;autoIncrement"`
+	GoalMoney int       `json:"goal_money"`
+	GoalCount int       `json:"goal_count"`
 	CreatedAt time.Time `json:"created_at"`
 }

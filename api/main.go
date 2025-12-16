@@ -7,6 +7,7 @@ import (
 	getGoal "github.com/rk2-okd/patienceBank-back/getGoal"
 	goalsettings "github.com/rk2-okd/patienceBank-back/goalSettings"
 	history "github.com/rk2-okd/patienceBank-back/history"
+	"github.com/rk2-okd/patienceBank-back/input"
 	lastweek "github.com/rk2-okd/patienceBank-back/lastweek"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -29,7 +30,7 @@ func main() {
 	r.POST("/goalsettings", goalsettings.GoalSettingsHandler(db))
 	r.GET("/history", history.HistoryHandler(db))
 	r.GET("/lastweek", lastweek.LastWeekHandler(db))
-
+	r.POST("/input", input.InputHandler(db))
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動
 }
