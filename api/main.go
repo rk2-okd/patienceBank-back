@@ -6,6 +6,7 @@ import (
 	connect "github.com/rk2-okd/patienceBank-back/connect"
 	goal "github.com/rk2-okd/patienceBank-back/goal"
 	record "github.com/rk2-okd/patienceBank-back/record"
+	user "github.com/rk2-okd/patienceBank-back/user"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -24,6 +25,10 @@ func main() {
 	r.GET("/history", record.HistoryHandler(db))
 	r.GET("/lastweek", record.LastWeekHandler(db))
 	r.POST("/input", record.InputHandler(db))
+	r.POST("/login", user.LoginHandler(db))
+	r.GET("/me", user.MeHandler(db))
+	r.GET("/getUser", user.GetUserHandler(db))
+
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動
 }

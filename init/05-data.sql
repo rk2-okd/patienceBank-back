@@ -13,3 +13,13 @@ INSERT INTO records (
     ('水筒を持ってった', 100, '2025-11-24'),
     ('新しい服を買うのを我慢した', 1000, '2025-11-25'),
     ('洋服飼うのにクーポン使った', 5000, '2025-11-27');
+
+INSERT INTO users (
+    username,
+    email,
+    password_hash,
+    comment,
+    auth_provider
+) VALUES 
+    -- hashed_password
+    ('testuser', 'test@example.com', '$2a$10$MjnhSuHCB.hnTJoqGY0IRu7OM30SVofw1l2rxCFOCQJeL5V8E58Xy', 'test comment', 'Admin');

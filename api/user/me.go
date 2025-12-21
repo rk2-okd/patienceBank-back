@@ -1,18 +1,26 @@
 package user
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func MeHandler(c *gin.Context) {
-	token, err := c.Cookie("token")
-	if err != nil {
-		c.JSON(401, gin.H{"loggedIn": false})
-		return
+func MeHandler(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		_, err := c.Cookie("token")
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"loggedIn": false,
+			})
+			return
+		}
+
+		// 本来はここで token を検証する
+
+		c.JSON(http.StatusOK, gin.H{
+			"loggedIn": true,
+		})
 	}
-
-	// 本来は token 検証する
-	_ = token
-
-	c.JSON(200, gin.H{"loggedIn": true})
 }

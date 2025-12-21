@@ -4,5 +4,5 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   comment VARCHAR(255),
-  auth_provider VARCHAR(50) NOT NULL DEFAULT 'local',
+  auth_provider VARCHAR(50) NOT NULL DEFAULT 'local'
 );
