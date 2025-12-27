@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	connect "github.com/rk2-okd/patienceBank-back/connect"
 	goal "github.com/rk2-okd/patienceBank-back/goal"
+	graph "github.com/rk2-okd/patienceBank-back/graph"
 	record "github.com/rk2-okd/patienceBank-back/record"
 	user "github.com/rk2-okd/patienceBank-back/user"
 
@@ -23,11 +24,12 @@ func main() {
 	r.GET("/getGoal", goal.GetGoalHandler(db))
 	r.POST("/goalsettings", goal.GoalSettingsHandler(db))
 	r.GET("/history", record.HistoryHandler(db))
-	r.GET("/lastweek", record.LastWeekHandler(db))
+	// r.GET("/lastweek", record.LastWeekHandler(db))
 	r.POST("/input", record.InputHandler(db))
 	r.POST("/login", user.LoginHandler(db))
 	r.GET("/me", user.MeHandler(db))
 	r.GET("/getUser", user.GetUserHandler(db))
+	r.GET("/graph", graph.GraphHandler(db))
 
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動

@@ -22,8 +22,7 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				log.Println("目標データなし → デフォルトGoalを返します")
 				goal = model.Goal{
-					GoalMoney: 0,
-					GoalCount: 0,
+					Goal: "デフォルトの目標",
 				}
 				c.JSON(http.StatusOK, goal)
 				return

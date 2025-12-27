@@ -27,6 +27,7 @@ func InputHandler(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"バリデーションエラー": err.Error()})
 			return
 		}
+		record.UserID = 1
 		if err := db.Create(&record).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"ＤＢ保存エラー": err.Error()})
 			return

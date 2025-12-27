@@ -30,7 +30,6 @@ services:
       - "8000:3306"
     volumes:
       - patience_test_volumes:/var/lib/mysql
-      - ./mysql/conf.d:/etc/mysql/conf.d
       - type: bind
         source: ./init
         target: /docker-entrypoint-initdb.d
