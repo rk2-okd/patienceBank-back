@@ -1,8 +1,0 @@
-
-USE patienceBank_db;
-CREATE TABLE IF NOT EXISTS goals (
-    goal_id INT AUTO_INCREMENT PRIMARY KEY,
-    goal VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-

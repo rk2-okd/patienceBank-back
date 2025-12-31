@@ -1,4 +1,4 @@
-package goal
+package goalserting
 
 import (
 	"log"
@@ -6,16 +6,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"gorm.io/gorm"
 )
 
 func GoalSettingsHandler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		db = db.Debug()
+
 		c.Header("Content-Type", "application/json")
 		log.Println("GoalSettingsHandlerにアクセスされました")
 
-		var goal model.Goal
+		var goal model.Goals
 		validate := validator.New()
 
 		// JSONを単体としてバインド

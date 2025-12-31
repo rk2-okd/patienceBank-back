@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"gorm.io/gorm"
 )
 
 func Handler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var records []model.Record
+		var records []model.Records
 		c.Header("Content-Type", "application/json; charset=utf-8")
 		log.Println("LastweekHandlerにアクセスされました")
 		params := c.Request.URL.Query()
@@ -30,7 +30,7 @@ func Handler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if err := db.Where("gaman_day >= ? AND gaman_day < ?", start, end).Find(&records).Error; err != nil {
+		if err := db.Where("workout_date >= ? AND workout_date < ?", start, end).Find(&records).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "データ取得に失敗しました"})
 			return
 		}

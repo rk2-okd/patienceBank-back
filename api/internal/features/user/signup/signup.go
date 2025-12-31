@@ -1,4 +1,4 @@
-package user
+package signup
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 )
 
 type SignupRequest struct {
@@ -38,7 +38,7 @@ func SignupHandler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		user := model.User{
+		user := model.Users{
 			Username:     req.Username,
 			Email:        req.Email,
 			PasswordHash: string(hash),

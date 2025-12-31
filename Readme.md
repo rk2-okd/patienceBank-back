@@ -14,10 +14,10 @@ goal_count:     目標回数
 
 
 record-table 記録テーブル
-gaman_id:int
-gaman_thing: string
+workout_id:int
+trained_part: string
 gaman_money:int
-gaman_day:date
+workout_date:date
 
 
 

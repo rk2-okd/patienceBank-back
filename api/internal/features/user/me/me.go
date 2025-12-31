@@ -1,4 +1,4 @@
-package user
+package me
 
 import (
 	"net/http"

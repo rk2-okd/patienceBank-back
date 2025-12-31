@@ -3,11 +3,17 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	connect "github.com/rk2-okd/patienceBank-back/connect"
-	goal "github.com/rk2-okd/patienceBank-back/goal"
-	graph "github.com/rk2-okd/patienceBank-back/graph"
-	record "github.com/rk2-okd/patienceBank-back/record"
-	user "github.com/rk2-okd/patienceBank-back/user"
+	getgoal "github.com/rk2-okd/patienceBank-back/internal/features/goal/getgoal"
+	goalsetting "github.com/rk2-okd/patienceBank-back/internal/features/goal/goalsetting"
+	input "github.com/rk2-okd/patienceBank-back/internal/features/input"
+	graph "github.com/rk2-okd/patienceBank-back/internal/features/reports/graph"
+	history "github.com/rk2-okd/patienceBank-back/internal/features/reports/history"
+	login "github.com/rk2-okd/patienceBank-back/internal/features/user/login"
+	me "github.com/rk2-okd/patienceBank-back/internal/features/user/me"
+	userinfo "github.com/rk2-okd/patienceBank-back/internal/features/user/userinfo"
+
+	// lastweek "github.com/rk2-okd/patienceBank-back/internal/features/reports/lastweek"
+	connect "github.com/rk2-okd/patienceBank-back/internal/shared/connect"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -21,15 +27,15 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
 	}))
-	r.GET("/getGoal", goal.GetGoalHandler(db))
-	r.POST("/goalsettings", goal.GoalSettingsHandler(db))
-	r.GET("/history", record.HistoryHandler(db))
-	// r.GET("/lastweek", record.LastWeekHandler(db))
-	r.POST("/input", record.InputHandler(db))
-	r.POST("/login", user.LoginHandler(db))
-	r.GET("/me", user.MeHandler(db))
-	r.GET("/getUser", user.GetUserHandler(db))
+	r.GET("/getGoal", getgoal.GetGoalHandler(db))
+	r.POST("/goalsettings", goalsetting.GoalSettingsHandler(db))
+	r.GET("/history", history.HistoryHandler(db))
 	r.GET("/graph", graph.GraphHandler(db))
+	// r.GET("/lastweek", reports.LastWeekHandler(db))
+	r.POST("/input", input.InputHandler(db))
+	r.POST("/login", login.LoginHandler(db))
+	r.GET("/me", me.MeHandler(db))
+	r.GET("/getUser", userinfo.GetUserHandler(db))
 
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動

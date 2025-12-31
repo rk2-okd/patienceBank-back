@@ -1,4 +1,4 @@
-package user
+package userinfo
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +16,7 @@ func GetUserHandler(db *gorm.DB) gin.HandlerFunc {
 
 		userID := c.Param("id")
 
-		var user model.User
+		var user model.Users
 		if err := db.First(&user, userID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})

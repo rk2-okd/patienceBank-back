@@ -1,10 +1,10 @@
 USE patienceBank_db;
 
 CREATE TABLE IF NOT EXISTS records (
-    gaman_id INT AUTO_INCREMENT PRIMARY KEY,
-    gaman_thing VARCHAR(255) NOT NULL,
-    gaman_minutes INT NOT NULL,
-    gaman_day DATE NOT NULL,
+    workout_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
+    trained_part TINYINT NOT NULL,
+    workout_duration INT NOT NULL,
+    workout_date DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );

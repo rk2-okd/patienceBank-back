@@ -1,4 +1,4 @@
-package goal
+package getgoal
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"gorm.io/gorm"
 )
 
@@ -15,13 +15,13 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 		c.Header("Content-Type", "application/json; charset=utf-8")
 		log.Println("GetGoalHandlerにアクセスされました")
 
-		var goal model.Goal
+		var goal model.Goals
 		err := db.Order("created_at desc").First(&goal).Error
 
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				log.Println("目標データなし → デフォルトGoalを返します")
-				goal = model.Goal{
+				goal = model.Goals{
 					Goal: "デフォルトの目標",
 				}
 				c.JSON(http.StatusOK, goal)

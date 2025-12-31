@@ -1,11 +1,11 @@
-package user
+package login
 
 import (
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rk2-okd/patienceBank-back/model"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -23,7 +23,7 @@ func LoginHandler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		// ① メールアドレスでユーザー取得
-		var user model.User
+		var user model.Users
 		if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
 			// ユーザーがいない / DBエラーでも、攻撃対策で同じメッセージにするのが無難
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "メールアドレスまたはパスワードが違います"})
