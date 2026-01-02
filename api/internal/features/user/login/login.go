@@ -2,8 +2,8 @@ package login
 
 import (
 	"net/http"
-	"time"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"golang.org/x/crypto/bcrypt"
@@ -34,22 +34,18 @@ func LoginHandler(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": "メールアドレスまたはパスワードが違います"})
 			return
 		}
-		// ③ トークン発行（ここでは例としてダミー。実運用はJWTを作る）
-		//    JWTにする場合は user.ID を入れて署名して返す
-		token := "dummy-token-for-example"
-		// ④ httpOnly Cookie にセット
-		// 開発(localhost)は Secure=false（httpsじゃないから）
-		// SameSite は c.SetSameSite で指定できる（後述）
-		c.SetSameSite(http.SameSiteLaxMode)
-		c.SetCookie(
-			"token",
-			token,
-			int((24 * time.Hour).Seconds()), // 1日
-			"/",
-			"",
-			false, // httpsなら true
-			true,  // httpOnly
-		)
+		if user.ID == nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "ユーザーIDが不正です"})
+			return
+		}
+
+		session := sessions.Default(c)
+		session.Set("user_id", *user.ID) // ← ここがポイント（ポインタを外して int を入れる）
+		if err := session.Save(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "セッション保存に失敗しました"})
+			return
+		}
+
 		c.JSON(http.StatusOK, gin.H{
 			"message":  "login success",
 			"username": user.Username,

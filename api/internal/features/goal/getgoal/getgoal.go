@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
@@ -14,10 +15,14 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Content-Type", "application/json; charset=utf-8")
 		log.Println("GetGoalHandlerにアクセスされました")
-
+		userStr := c.Query("user")
+		user, err := strconv.Atoi(userStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user_idが不正です"})
+			return
+		}
 		var goal model.Goals
-		err := db.Order("created_at desc").First(&goal).Error
-
+		err = db.Where("user_id = ?", user).Order("created_at desc").First(&goal).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				log.Println("目標データなし → デフォルトGoalを返します")

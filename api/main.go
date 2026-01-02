@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	getgoal "github.com/rk2-okd/patienceBank-back/internal/features/goal/getgoal"
 	goalsetting "github.com/rk2-okd/patienceBank-back/internal/features/goal/goalsetting"
@@ -11,6 +13,7 @@ import (
 	login "github.com/rk2-okd/patienceBank-back/internal/features/user/login"
 	me "github.com/rk2-okd/patienceBank-back/internal/features/user/me"
 	userinfo "github.com/rk2-okd/patienceBank-back/internal/features/user/userinfo"
+	authmw "github.com/rk2-okd/patienceBank-back/internal/shared/auth"
 
 	// lastweek "github.com/rk2-okd/patienceBank-back/internal/features/reports/lastweek"
 	connect "github.com/rk2-okd/patienceBank-back/internal/shared/connect"
@@ -27,15 +30,32 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
 	}))
-	r.GET("/getGoal", getgoal.GetGoalHandler(db))
-	r.POST("/goalsettings", goalsetting.GoalSettingsHandler(db))
-	r.GET("/history", history.HistoryHandler(db))
-	r.GET("/graph", graph.GraphHandler(db))
-	// r.GET("/lastweek", reports.LastWeekHandler(db))
-	r.POST("/input", input.InputHandler(db))
+	// ② ★セッション（cookie）を使う設定：これが「ログイン状態を保持する土台」
+	store := cookie.NewStore([]byte("super-secret-key")) // 本番は環境変数にする
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   60 * 60 * 24 * 7, // 7日（好きに）
+		HttpOnly: true,
+		Secure:   false, // https のときだけ true
+		// SameSite: http.SameSiteLaxMode, // 必要なら設定（多くはデフォルトでOK）
+	})
+	r.Use(sessions.Sessions("patiencebank_session", store))
 	r.POST("/login", login.LoginHandler(db))
-	r.GET("/me", me.MeHandler(db))
-	r.GET("/getUser", userinfo.GetUserHandler(db))
+	// ④ ログイン必須（認証が必要なAPI）はグループ化して middleware をかける
+	auth := r.Group("/")
+	auth.Use(authmw.AuthRequired())
+	{
+		auth.GET("/me", me.MeHandler(db))
+
+		auth.GET("/getGoal", getgoal.GetGoalHandler(db))
+		auth.POST("/goalsettings", goalsetting.GoalSettingsHandler(db))
+
+		auth.GET("/history", history.HistoryHandler(db))
+		auth.GET("/graph", graph.GraphHandler(db))
+		auth.POST("/input", input.InputHandler(db))
+
+		auth.GET("/getUser", userinfo.GetUserHandler(db))
+	}
 
 	// サーバーを起動
 	r.Run(":8080") // デフォルトでポート8080で起動

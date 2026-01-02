@@ -41,7 +41,6 @@ func GoalSettingsHandler(db *gorm.DB) gin.HandlerFunc {
 		// 成功レスポンス
 		c.JSON(http.StatusOK, gin.H{
 			"message": "目標設定を保存しました",
-			"goal_id": goal.GoalID,
 		})
 	}
 }
