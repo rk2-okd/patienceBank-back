@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS records (
     user_id INT NULL,
     trained_part TINYINT NOT NULL,
     workout_duration INT NOT NULL,
-    workout_date DATE NOT NULL,
+    workout_date DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );

@@ -16,9 +16,8 @@ import (
 	authmw "github.com/rk2-okd/patienceBank-back/internal/shared/auth"
 
 	// lastweek "github.com/rk2-okd/patienceBank-back/internal/features/reports/lastweek"
-	connect "github.com/rk2-okd/patienceBank-back/internal/shared/connect"
-
 	_ "github.com/go-sql-driver/mysql"
+	connect "github.com/rk2-okd/patienceBank-back/internal/shared/connect"
 )
 
 func main() {
@@ -41,7 +40,6 @@ func main() {
 	})
 	r.Use(sessions.Sessions("patiencebank_session", store))
 	r.POST("/login", login.LoginHandler(db))
-	// ④ ログイン必須（認証が必要なAPI）はグループ化して middleware をかける
 	auth := r.Group("/")
 	auth.Use(authmw.AuthRequired())
 	{
@@ -56,7 +54,5 @@ func main() {
 
 		auth.GET("/getUser", userinfo.GetUserHandler(db))
 	}
-
-	// サーバーを起動
-	r.Run(":8080") // デフォルトでポート8080で起動
+	r.Run(":8080")
 }

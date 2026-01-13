@@ -4,9 +4,9 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rk2-okd/patienceBank-back/internal/shared/checkuser"
 	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
 	"gorm.io/gorm"
 )
@@ -15,14 +15,13 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Content-Type", "application/json; charset=utf-8")
 		log.Println("GetGoalHandlerにアクセスされました")
-		userStr := c.Query("user")
-		user, err := strconv.Atoi(userStr)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user_idが不正です"})
+		uid, ok := checkuser.CheckUser(c)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "ログインしてください"})
 			return
 		}
 		var goal model.Goals
-		err = db.Where("user_id = ?", user).Order("created_at desc").First(&goal).Error
+		err := db.Where("user_id = ?", uid).Order("created_at desc").First(&goal).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				log.Println("目標データなし → デフォルトGoalを返します")
@@ -32,7 +31,6 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 				c.JSON(http.StatusOK, goal)
 				return
 			}
-
 			// 本当のエラーだけ500
 			log.Println("GetGoal error:", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "目標データの取得に失敗しました"})
