@@ -7,13 +7,11 @@ INSERT INTO users (
     comment,
     auth_provider -- 1, Admin 2, local
 ) VALUES 
-    -- hashed_password
-    ('testuser', 'test@example.com', '$2a$10$MjnhSuHCB.hnTJoqGY0IRu7OM30SVofw1l2rxCFOCQJeL5V8E58Xy', 'test comment', 1),
-    ('seconduser', 'second@example.com', '$2a$10$e0MYzXyjpJS7Pd0RVvHwHeFX5J8vYh3U8b8r7bq4p6d8Z6pG6FhHy', 'second comment', 2);
--- const list = [
---   "体感","背骨", "顔","首","背中","お腹","肩","二の腕","腕（ひじ下）",
---    "手","おしり","太もも","内もも","ふくらはぎ","足",
--- ];
+    -- guest_password
+    ('ゲストユーザ', 'guest@example.com', '$2a$10$QRgyY2p3u9GyKyRE0VtQUeLmlfzOlRUCburHp8idAHobYBdqSvtZm', 'test comment', 1),
+    -- chief_password
+    ('チーフユーザ', 'chief@example.com', '$2a$10$6pfWMd.kdOXB2tuVnnavo.qctC2hzZ5o.tRPe8lEDYqmAtWuXb.eO', 'second comment', 2);
+
 INSERT INTO records (
     trained_part, -- 1, 体感 2,背骨 3,顔 4,首 5,背中 6,お腹 7,肩 8,二の腕 9,腕（ひじ下） 10,手 11,おしり 12,太もも 13,内もも 14,ふくらはぎ 15,足
     workout_duration,
@@ -49,7 +47,8 @@ INSERT INTO records (
     (13, 20, '2025-12-03', 2),
     (11, 25, '2025-12-03', 2),
     (14, 25, '2025-12-03', 2),
-    (15, 20, '2025-12-03', 2);
+    (15, 20, '2026-01-13', 1),
+    (5, 20, '2026-01-13', 1);
 
 INSERT INTO goals (
     user_id,

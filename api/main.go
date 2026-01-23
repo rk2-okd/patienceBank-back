@@ -11,6 +11,7 @@ import (
 	graph "github.com/rk2-okd/patienceBank-back/internal/features/reports/graph"
 	history "github.com/rk2-okd/patienceBank-back/internal/features/reports/history"
 	login "github.com/rk2-okd/patienceBank-back/internal/features/user/login"
+	logout "github.com/rk2-okd/patienceBank-back/internal/features/user/logout"
 	me "github.com/rk2-okd/patienceBank-back/internal/features/user/me"
 	userinfo "github.com/rk2-okd/patienceBank-back/internal/features/user/userinfo"
 	authmw "github.com/rk2-okd/patienceBank-back/internal/shared/auth"
@@ -33,7 +34,7 @@ func main() {
 	store := cookie.NewStore([]byte("super-secret-key")) // 本番は環境変数にする
 	store.Options(sessions.Options{
 		Path:     "/",
-		MaxAge:   60 * 60 * 24 * 7, // 7日（好きに）
+		MaxAge:   60 * 60 * 24 * 1, // 1日
 		HttpOnly: true,
 		Secure:   false, // https のときだけ true
 		// SameSite: http.SameSiteLaxMode, // 必要なら設定（多くはデフォルトでOK）
@@ -53,6 +54,10 @@ func main() {
 		auth.POST("/input", input.InputHandler(db))
 
 		auth.GET("/getUser", userinfo.GetUserHandler(db))
+		auth.POST("/logout", logout.LogoutHandler())
+	}
+	for _, rt := range r.Routes() {
+		println("ROUTE:", rt.Method, rt.Path)
 	}
 	r.Run(":8080")
 }
