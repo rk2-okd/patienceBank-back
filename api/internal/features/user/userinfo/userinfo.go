@@ -31,7 +31,7 @@ func GetUserHandler(db *gorm.DB) gin.HandlerFunc {
 			"id":            user.ID,
 			"username":      user.Username,
 			"email":         user.Email,
-			"comment":       user.Comment,
+			"goal":          user.Goal,
 			"auth_provider": user.AuthProvider,
 		})
 	}

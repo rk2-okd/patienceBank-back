@@ -4,13 +4,13 @@ INSERT INTO users (
     username,
     email,
     password_hash,
-    comment,
+    goal,
     auth_provider -- 1, Admin 2, local
 ) VALUES 
     -- guest_password
-    ('ゲストユーザ', 'guest@example.com', '$2a$10$QRgyY2p3u9GyKyRE0VtQUeLmlfzOlRUCburHp8idAHobYBdqSvtZm', 'test comment', 1),
+    ('ゲストユーザ', 'guest@example.com', '$2a$10$QRgyY2p3u9GyKyRE0VtQUeLmlfzOlRUCburHp8idAHobYBdqSvtZm', 'test goal', 1),
     -- chief_password
-    ('チーフユーザ', 'chief@example.com', '$2a$10$6pfWMd.kdOXB2tuVnnavo.qctC2hzZ5o.tRPe8lEDYqmAtWuXb.eO', 'second comment', 2);
+    ('チーフユーザ', 'chief@example.com', '$2a$10$6pfWMd.kdOXB2tuVnnavo.qctC2hzZ5o.tRPe8lEDYqmAtWuXb.eO', 'second goal', 2);
 
 INSERT INTO records (
     trained_part, -- 1, 体感 2,背骨 3,顔 4,首 5,背中 6,お腹 7,肩 8,二の腕 9,腕（ひじ下） 10,手 11,おしり 12,太もも 13,内もも 14,ふくらはぎ 15,足
@@ -26,13 +26,13 @@ INSERT INTO records (
     (6, 30, '2025-11-30', 1),
     (7, 20, '2025-11-30', 1),
     (8, 15, '2025-11-30', 1),
-    (9, 10, '2025-11-30', 1),
-    (10, 5, '2025-11-30', 1),
-    (11, 20, '2025-11-30', 1),
-    (12, 25, '2025-11-30', 1),
-    (13, 15, '2025-11-30', 1),
-    (14, 10, '2025-11-30', 1),
-    (15, 5, '2025-11-30', 1),
+    (9, 10, '2025-12-30', 1),
+    (10, 5, '2025-12-30', 1),
+    (11, 20, '2025-12-30', 1),
+    (12, 25, '2025-12-30', 1),
+    (13, 15, '2025-12-30', 1),
+    (14, 10, '2025-12-30', 1),
+    (15, 5, '2025-12-30', 1),
     (1, 40, '2025-12-01', 2),
     (5, 30, '2025-12-01', 2),
     (7, 25, '2025-12-01', 2),
@@ -50,15 +50,6 @@ INSERT INTO records (
     (15, 20, '2026-01-13', 1),
     (5, 20, '2026-01-13', 1);
 
-INSERT INTO goals (
-    user_id,
-    goal,
-    created_at
-) VALUES 
-    (1, '毎日ストレッチを続ける', '2025-11-01T10:00:00+09:00'),
-    (1, '週に3回は運動する', '2025-11-10T10:00:00+09:00'),
-    (2, '体重を5kg減らす', '2025-12-31T10:00:00+09:00'),
-    (2, '毎朝10分間の瞑想を行う', '2025-01-11T10:00:00+09:00');
 
 
 

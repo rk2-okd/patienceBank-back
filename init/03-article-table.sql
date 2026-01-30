@@ -1,7 +1,7 @@
 
 USE patienceBank_db;
 CREATE TABLE IF NOT EXISTS articles (
-  id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  articles_id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title         VARCHAR(512) NOT NULL,
   link          VARCHAR(512) NOT NULL,
   created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,

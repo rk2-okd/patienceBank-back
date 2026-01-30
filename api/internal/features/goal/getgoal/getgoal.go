@@ -20,15 +20,11 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "ログインしてください"})
 			return
 		}
-		var goal model.Goals
-		err := db.Where("user_id = ?", uid).Order("created_at desc").First(&goal).Error
+		var user model.Users
+		err := db.Where("id = ?", uid).First(&user).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
-				log.Println("目標データなし → デフォルトGoalを返します")
-				goal = model.Goals{
-					Goal: "デフォルトの目標",
-				}
-				c.JSON(http.StatusOK, goal)
+				log.Println("ユーザー情報なし → デフォルトユーザーを返します")
 				return
 			}
 			// 本当のエラーだけ500
@@ -36,8 +32,7 @@ func GetGoalHandler(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "目標データの取得に失敗しました"})
 			return
 		}
-
 		// 正常に取得できたとき
-		c.JSON(http.StatusOK, goal)
+		c.JSON(http.StatusOK, user)
 	}
 }

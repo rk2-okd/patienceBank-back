@@ -1,9 +1,9 @@
-package goalserting
+package goalsetting
 
 import (
 	"log"
 	"net/http"
-	"time"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -19,29 +19,32 @@ func GoalSettingsHandler(db *gorm.DB) gin.HandlerFunc {
 		c.Header("Content-Type", "application/json")
 		log.Println("GoalSettingsHandlerにアクセスされました")
 
-		var goal model.Goals
+		var user model.Users
 		validate := validator.New()
 		uid, ok := checkuser.CheckUser(c)
 		if !ok {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "ログインしてください"})
 			return
 		}
-		if err := c.ShouldBindJSON(&goal); err != nil {
+		if err := c.ShouldBindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"バインドエラー": err.Error()})
 			return
 		}
-		goal = model.Goals{
-			UserID:    uid,
-			Goal:      goal.Goal,
-			CreatedAt: time.Now(),
+		user = model.Users{
+			ID:           &uid,
+			Username:     user.Username,
+			Email:        user.Email,
+			PasswordHash: user.PasswordHash,
+			Goal:         strings.TrimSpace(user.Goal),
+			AuthProvider: user.AuthProvider,
 		}
 		// バリデーション
-		if err := validate.Struct(goal); err != nil {
+		if err := validate.Struct(user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"バリデーションエラー": err.Error()})
 			return
 		}
 		// DB保存
-		if err := db.Create(&goal).Error; err != nil {
+		if err := db.Create(&user).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"ＤＢ保存エラー": err.Error()})
 			return
 		}

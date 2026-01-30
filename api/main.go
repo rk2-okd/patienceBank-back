@@ -41,18 +41,15 @@ func main() {
 	})
 	r.Use(sessions.Sessions("patiencebank_session", store))
 	r.POST("/login", login.LoginHandler(db))
+	r.PATCH("/goalsettings", goalsetting.GoalSettingsHandler(db))
 	auth := r.Group("/")
 	auth.Use(authmw.AuthRequired())
 	{
 		auth.GET("/me", me.MeHandler(db))
-
-		auth.GET("/getGoal", getgoal.GetGoalHandler(db))
-		auth.POST("/goalsettings", goalsetting.GoalSettingsHandler(db))
-
 		auth.GET("/history", history.HistoryHandler(db))
-		auth.GET("/graph", graph.GraphHandler(db))
 		auth.POST("/input", input.InputHandler(db))
-
+		auth.GET("/graph", graph.GraphHandler(db))
+		auth.GET("/getgoal", getgoal.GetGoalHandler(db))
 		auth.GET("/getUser", userinfo.GetUserHandler(db))
 		auth.POST("/logout", logout.LogoutHandler())
 	}
