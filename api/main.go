@@ -5,20 +5,18 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	getgoal "github.com/rk2-okd/patienceBank-back/internal/features/goal/getgoal"
-	goalsetting "github.com/rk2-okd/patienceBank-back/internal/features/goal/goalsetting"
-	input "github.com/rk2-okd/patienceBank-back/internal/features/input"
-	graph "github.com/rk2-okd/patienceBank-back/internal/features/reports/graph"
-	history "github.com/rk2-okd/patienceBank-back/internal/features/reports/history"
-	login "github.com/rk2-okd/patienceBank-back/internal/features/user/login"
-	logout "github.com/rk2-okd/patienceBank-back/internal/features/user/logout"
-	me "github.com/rk2-okd/patienceBank-back/internal/features/user/me"
-	userinfo "github.com/rk2-okd/patienceBank-back/internal/features/user/userinfo"
-	authmw "github.com/rk2-okd/patienceBank-back/internal/shared/auth"
-
-	// lastweek "github.com/rk2-okd/patienceBank-back/internal/features/reports/lastweek"
 	_ "github.com/go-sql-driver/mysql"
-	connect "github.com/rk2-okd/patienceBank-back/internal/shared/connect"
+	getgoal "github.com/rk2-okd/within-back/internal/features/goal/getgoal"
+	goalsetting "github.com/rk2-okd/within-back/internal/features/goal/goalsetting"
+	input "github.com/rk2-okd/within-back/internal/features/input"
+	graph "github.com/rk2-okd/within-back/internal/features/reports/graph"
+	history "github.com/rk2-okd/within-back/internal/features/reports/history"
+	login "github.com/rk2-okd/within-back/internal/features/user/login"
+	logout "github.com/rk2-okd/within-back/internal/features/user/logout"
+	me "github.com/rk2-okd/within-back/internal/features/user/me"
+	userinfo "github.com/rk2-okd/within-back/internal/features/user/userinfo"
+	authmw "github.com/rk2-okd/within-back/internal/shared/auth"
+	connect "github.com/rk2-okd/within-back/internal/shared/connect"
 )
 
 func main() {
@@ -26,7 +24,7 @@ func main() {
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowMethods:     []string{"GET", "POST", "PATCH", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
 	}))
@@ -39,9 +37,8 @@ func main() {
 		Secure:   false, // https のときだけ true
 		// SameSite: http.SameSiteLaxMode, // 必要なら設定（多くはデフォルトでOK）
 	})
-	r.Use(sessions.Sessions("patiencebank_session", store))
+	r.Use(sessions.Sessions("within_session", store))
 	r.POST("/login", login.LoginHandler(db))
-	r.PATCH("/goalsettings", goalsetting.GoalSettingsHandler(db))
 	auth := r.Group("/")
 	auth.Use(authmw.AuthRequired())
 	{
@@ -52,6 +49,7 @@ func main() {
 		auth.GET("/getgoal", getgoal.GetGoalHandler(db))
 		auth.GET("/getUser", userinfo.GetUserHandler(db))
 		auth.POST("/logout", logout.LogoutHandler())
+		auth.PATCH("/goalsetting", goalsetting.GoalSettingsHandler(db))
 	}
 	for _, rt := range r.Routes() {
 		println("ROUTE:", rt.Method, rt.Path)

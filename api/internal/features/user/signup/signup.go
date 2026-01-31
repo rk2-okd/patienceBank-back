@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
-	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
+	"github.com/rk2-okd/within-back/internal/shared/model"
 )
 
 type SignupRequest struct {

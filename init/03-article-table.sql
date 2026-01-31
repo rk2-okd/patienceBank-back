@@ -1,5 +1,5 @@
 
-USE patienceBank_db;
+USE within_db;
 CREATE TABLE IF NOT EXISTS articles (
   articles_id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title         VARCHAR(512) NOT NULL,

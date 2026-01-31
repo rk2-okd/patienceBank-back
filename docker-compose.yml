@@ -1,6 +1,6 @@
 services:
   go-api:
-    container_name: patienceBank_api
+    container_name: within_api
     build: 
       context: ./api
     ports:
@@ -12,10 +12,10 @@ services:
     volumes:
       - ./api:/go/src/app
     networks:
-      - patienceBank-networks
+      - within-networks
   db:
     image: mysql:8.0
-    container_name: patienceBank_db
+    container_name: within_db
     build: ./mysql
     tty: true
     platform: linux/amd64
@@ -30,20 +30,20 @@ services:
     ports:
       - "8000:3306"
     volumes:
-      - patience_test_volumes:/var/lib/mysql
+      - within_test_volumes:/var/lib/mysql
       - type: bind
         source: ./init
         target: /docker-entrypoint-initdb.d
     networks:
-      - patienceBank-networks
+      - within-networks
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 volumes:
-  patience_test_volumes:
-    name: patience_test_volumes
+  within_test_volumes:
+    name: within_test_volumes
 networks:
-  patienceBank-networks:
+  within-networks:
     external: true

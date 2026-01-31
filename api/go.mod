@@ -1,4 +1,4 @@
-module github.com/rk2-okd/patienceBank-back
+module github.com/rk2-okd/within-back
 
 go 1.23.0
 

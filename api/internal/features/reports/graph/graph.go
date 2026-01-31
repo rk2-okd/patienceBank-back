@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rk2-okd/patienceBank-back/internal/shared/checkuser"
-	"github.com/rk2-okd/patienceBank-back/internal/shared/model"
-	"github.com/rk2-okd/patienceBank-back/internal/shared/usecase"
+	"github.com/rk2-okd/within-back/internal/shared/checkuser"
+	"github.com/rk2-okd/within-back/internal/shared/model"
+	"github.com/rk2-okd/within-back/internal/shared/usecase"
 	"gorm.io/gorm"
 )
 

@@ -1,4 +1,4 @@
-USE patienceBank_db;
+USE within_db;
 
 CREATE TABLE IF NOT EXISTS records (
     workout_id INT AUTO_INCREMENT PRIMARY KEY,
