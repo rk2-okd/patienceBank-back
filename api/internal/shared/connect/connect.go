@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -14,20 +13,20 @@ import (
 var DB *gorm.DB
 
 func DBConnect() *gorm.DB {
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_NAME"),
 	)
-	log.Println(dsn)
-	// log.Printf("Connecting to DB: %s@tcp(%s:%s)/%s", user, host, port, dbname)
+
+	// パスワードは出さない（安全なログ）
+	log.Printf("Connecting to DB host=%s port=%s db=%s",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
 
 	var dbErr error
 	for i := 0; i < 10; i++ {
@@ -52,6 +51,5 @@ func DBConnect() *gorm.DB {
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(30 * time.Hour)
 
-	log.Println("データベース接続成功")
 	return DB
 }
