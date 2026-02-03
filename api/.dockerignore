@@ -1,0 +1,6 @@
+# .env
+# .git
+# *.log
+# tmp
+# node_modules
+# docker-compose.yml
